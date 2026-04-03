@@ -9,8 +9,8 @@ RUN comfy node install --exit-on-fail derfuu_comfyui_moddednodes@1.0.1
 RUN comfy node install --exit-on-fail comfyui-easy-use@1.3.6
 # RUN comfy node install --exit-on-fail lanpaint@1.5.0
 # 2. THE LANPAINT FIX (This guarantees the KSampler node will load!)
-RUN git clone https://github.com/scraed/LanPaint.git /comfyui/custom_nodes/LanPaint && \
-    pip install -r /comfyui/custom_nodes/LanPaint/requirements.txt
+# 2. THE LANPAINT FIX (Install directly via GitHub URL)
+RUN comfy node install --exit-on-fail https://github.com/scraed/LanPaint.git
 
 # download models into comfyui
 RUN comfy model download --url https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors --relative-path models/clip --filename qwen_3_8b_fp8mixed.safetensors
