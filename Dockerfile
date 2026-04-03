@@ -7,13 +7,16 @@ RUN comfy node install --exit-on-fail comfyui_essentials@1.1.0
 RUN comfy node install --exit-on-fail comfyui_controlnet_aux@1.1.3
 RUN comfy node install --exit-on-fail derfuu_comfyui_moddednodes@1.0.1
 RUN comfy node install --exit-on-fail comfyui-easy-use@1.3.6
-RUN comfy node install --exit-on-fail lanpaint@1.5.0
+# RUN comfy node install --exit-on-fail lanpaint@1.5.0
+# 2. THE LANPAINT FIX (This guarantees the KSampler node will load!)
+RUN git clone https://github.com/scraed/LanPaint.git /comfyui/custom_nodes/LanPaint && \
+    pip install -r /comfyui/custom_nodes/LanPaint/requirements.txt
 
 # download models into comfyui
 RUN comfy model download --url https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors --relative-path models/clip --filename qwen_3_8b_fp8mixed.safetensors
 RUN comfy model download --url https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors --relative-path models/vae --filename flux2-vae.safetensors
-RUN comfy model download --url https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_l.onnx --relative-path models/controlnet --filename yolox_l.onnx
-RUN comfy model download --url https://huggingface.co/hr16/DWPose-TorchScript-BatchSize5/resolve/main/dw-ll_ucoco_384_bs5.torchscript.pt --relative-path models/controlnet --filename dw-ll_ucoco_384_bs5.torchscript.pt
+RUN comfy model download --url https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_l.onnx --relative-path custom_nodes/comfyui_controlnet_aux/ckpts/yzd-v/DWPose --filename yolox_l.onnx
+RUN comfy model download --url https://huggingface.co/hr16/DWPose-TorchScript-BatchSize5/resolve/main/dw-ll_ucoco_384_bs5.torchscript.pt --relative-path custom_nodes/comfyui_controlnet_aux/ckpts/hr16/DWPose-TorchScript-BatchSize5 --filename dw-ll_ucoco_384_bs5.torchscript.pt
 RUN comfy model download --url https://huggingface.co/wikeeyang/Flux2-Klein-9B-True-V1/resolve/main/Flux2-Klein-9B-True-bf16.safetensors --relative-path models/diffusion_models --filename Flux2-Klein-9B-True-bf16.safetensors
 
 # copy all input data (like images or videos) into comfyui (uncomment and adjust if needed)
